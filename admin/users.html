@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Users — DESTINA Admin</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body data-page="admin-users" data-base="../" class="bg-sand">
+
+  <div id="admin-shell-root" class="relative"></div>
+
+  <script src="../js/supabase.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/admin.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    let currentAdminId = null;
+
+    async function loadAdminUsers() {
+      const admin = await requireAdmin();
+      if (!admin) return;
+      currentAdminId = admin.id;
+      renderAdminChrome("users");
+      window.syncNavbarAuthState?.();
+
+      document.getElementById("admin-main").innerHTML = `
+        <input id="admin-u-search" type="text" placeholder="Search by name or email..." class="input-field max-w-xs">
+        <div class="card mt-6 overflow-x-auto">
+          <table class="w-full min-w-[650px] text-left text-sm">
+            <thead class="border-b border-tide/10 text-ink/50">
+              <tr><th class="px-4 py-3">Name</th><th class="px-4 py-3">Email</th><th class="px-4 py-3">Role</th><th class="px-4 py-3">Joined</th><th class="px-4 py-3">Status</th><th class="px-4 py-3 text-right">Actions</th></tr>
+            </thead>
+            <tbody id="admin-u-tbody"></tbody>
+          </table>
+        </div>
+        <p class="mt-3 text-xs text-ink/40">Only name, email, role, and status are shown — passwords and other auth internals are never exposed here.</p>`;
+
+      document.getElementById("admin-u-search").addEventListener("input", debounceUsers(refreshUsersTable, 300));
+      refreshUsersTable();
+    }
+
+    function debounceUsers(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
+
+    async function refreshUsersTable() {
+      const tbody = document.getElementById("admin-u-tbody");
+      tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-ink/40">Loading...</td></tr>`;
+      const search = document.getElementById("admin-u-search").value.trim();
+      const { data, error } = await adminGetUsers({ search });
+
+      if (error) { tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-coral-dark">${window.describeError(error)}</td></tr>`; return; }
+      if (!data.length) { tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-ink/40">No users found.</td></tr>`; return; }
+
+      tbody.innerHTML = data.map(u => `
+        <tr class="border-b border-tide/5 last:border-0">
+          <td class="px-4 py-3 font-medium text-tide">${u.full_name || "—"}</td>
+          <td class="px-4 py-3 text-ink/60">${u.email}</td>
+          <td class="px-4 py-3">
+            <select class="input-field !py-1.5 !px-2 text-xs" ${u.id === currentAdminId ? "disabled title='You cannot change your own role'" : ""} onchange="handleRoleChange('${u.id}', this.value)">
+              <option value="user" ${u.role === "user" ? "selected" : ""}>User</option>
+              <option value="admin" ${u.role === "admin" ? "selected" : ""}>Admin</option>
+            </select>
+          </td>
+          <td class="px-4 py-3 text-ink/60">${new Date(u.created_at).toLocaleDateString()}</td>
+          <td class="px-4 py-3"><span class="badge ${u.status === "disabled" ? "!bg-coral/10 !text-coral-dark" : ""}">${u.status}</span></td>
+          <td class="px-4 py-3 text-right">
+            <button class="btn-ghost !px-3 !py-1.5 text-xs ${u.id === currentAdminId ? "opacity-40 pointer-events-none" : ""}" onclick="handleToggleStatus('${u.id}', '${u.status}')">
+              ${u.status === "disabled" ? "Enable" : "Disable"}
+            </button>
+          </td>
+        </tr>`).join("");
+    }
+
+    async function handleRoleChange(userId, role) {
+      const result = await adminUpdateUserRole(userId, role);
+      window.showToast(result.message, result.success ? "success" : "error");
+      if (!result.success) refreshUsersTable();
+    }
+
+    async function handleToggleStatus(userId, currentStatus) {
+      if (!confirm(currentStatus === "active" ? "Disable this user's account?" : "Re-enable this user's account?")) return;
+      const result = await adminToggleUserStatus(userId, currentStatus);
+      window.showToast(result.message, result.success ? "success" : "error");
+      if (result.success) refreshUsersTable();
+    }
+
+    document.addEventListener("DOMContentLoaded", loadAdminUsers);
+  </script>
+</body>
+</html>

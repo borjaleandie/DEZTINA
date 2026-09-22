@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-tide:      #0E3B43; /* deep ocean teal — primary */
+    --color-tide-dark:  #082A30;
+    --color-coral:     #E8623C; /* sunrise coral — accent */
+    --color-coral-dark: #C94F2D;
+    --color-sand:      #F4ECD8; /* warm sand — surface */
+    --color-leaf:      #4C7A5E; /* leaf green — secondary accent */
+    --color-ink:       #1B2421; /* near-black text */
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-ink antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Fraunces', Georgia, serif;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-coral);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-coral px-6 py-3
+           font-medium text-white transition hover:bg-coral-dark active:scale-[0.98];
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-tide/20 bg-white/70 px-6 py-3
+           font-medium text-tide transition hover:bg-white active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5
+           font-medium text-tide transition hover:bg-tide/5;
+  }
+  .card {
+    @apply rounded-2xl bg-white shadow-[0_2px_20px_-4px_rgba(14,59,67,0.12)] transition hover:shadow-[0_8px_28px_-6px_rgba(14,59,67,0.22)];
+  }
+  .input-field {
+    @apply w-full rounded-xl border border-tide/15 bg-white px-4 py-3 text-ink placeholder:text-ink/40
+           focus:border-coral focus:outline-none focus:ring-1 focus:ring-coral;
+  }
+  .label-field {
+    @apply mb-1.5 block text-sm font-medium text-tide;
+  }
+  .badge {
+    @apply inline-flex items-center rounded-full bg-leaf/10 px-3 py-1 text-xs font-medium text-leaf;
+  }
+  .section-pad {
+    @apply px-6 py-16 sm:px-10 lg:px-16;
+  }
+}

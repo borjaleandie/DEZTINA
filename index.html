@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DESTINA — Tourist Destination Guide</title>
+  <meta name="description" content="Your smart guide to discovering beautiful destinations, hidden gems, and unforgettable experiences.">
+  <meta property="og:title" content="DESTINA — Discover. Explore. Experience.">
+  <meta property="og:description" content="Explore amazing places, find hidden gems, and plan your next unforgettable adventure with DESTINA.">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body data-page="home" data-base="" class="bg-white">
+
+  <div id="navbar-root"></div>
+
+  <!-- HERO -->
+  <section class="relative overflow-hidden">
+    <div class="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 sm:px-10 lg:grid-cols-2 lg:px-16 lg:py-28">
+      <div>
+        <p class="mb-4 font-display text-lg italic text-coral">Discover. Explore. Experience.</p>
+        <h1 class="font-display text-5xl font-semibold leading-[1.05] text-tide sm:text-6xl">
+          Discover Your Next Destination
+        </h1>
+        <p class="mt-6 max-w-lg text-lg leading-relaxed text-ink/70">
+          Explore amazing places, find hidden gems, and plan your next unforgettable adventure with DESTINA.
+        </p>
+
+        <form id="hero-search-form" class="mt-8 flex max-w-md gap-2">
+          <label for="hero-search" class="sr-only">Search destinations</label>
+          <input id="hero-search" type="text" placeholder="Search beaches, mountains, waterfalls..."
+                 class="input-field" autocomplete="off">
+          <button type="submit" class="btn-primary shrink-0" aria-label="Search">
+            <i data-lucide="search" class="h-5 w-5"></i>
+          </button>
+        </form>
+
+        <div class="mt-6 flex flex-wrap gap-4">
+          <a href="destinations.html" class="btn-primary">Explore Destinations</a>
+          <a href="map.html" class="btn-secondary">Explore Map</a>
+        </div>
+      </div>
+
+      <div class="relative hidden lg:block">
+        <div class="absolute -right-6 -top-6 h-72 w-72 rounded-full bg-coral/10"></div>
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&q=80"
+             alt="Aerial view of a tropical island coastline"
+             class="relative aspect-[4/5] w-full rounded-[2rem] object-cover shadow-2xl">
+        <div class="absolute -bottom-6 -left-6 w-56 rounded-2xl bg-white p-4 shadow-xl">
+          <div class="flex items-center gap-1 text-coral">
+            <i data-lucide="star" class="h-4 w-4 fill-coral"></i>
+            <i data-lucide="star" class="h-4 w-4 fill-coral"></i>
+            <i data-lucide="star" class="h-4 w-4 fill-coral"></i>
+            <i data-lucide="star" class="h-4 w-4 fill-coral"></i>
+            <i data-lucide="star" class="h-4 w-4 fill-coral"></i>
+          </div>
+          <p class="mt-1 font-display text-sm text-tide">Loved by thousands of travelers</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRANSPARENCY SEAL (required prominently on the main page per GWTD) -->
+  <section class="border-y border-tide/10 bg-sand">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-4 sm:px-10 lg:px-16">
+      <a href="transparency.html" class="flex items-center gap-3 text-tide hover:text-coral">
+        <span class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-current">
+          <i data-lucide="shield-check" class="h-5 w-5"></i>
+        </span>
+        <span>
+          <span class="block text-sm font-semibold">Transparency Seal</span>
+          <span class="block text-xs text-ink/50">Budgets, disclosures & agency operations — view our full disclosure</span>
+        </span>
+      </a>
+      <a href="citizens-charter.html" class="text-sm font-medium text-tide hover:text-coral">Citizen's Charter →</a>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section class="section-pad">
+    <div class="mx-auto max-w-7xl">
+      <h2 class="font-display text-3xl font-semibold text-tide">Browse by Category</h2>
+      <div id="category-strip" class="mt-8 flex gap-4 overflow-x-auto pb-2">
+        <!-- injected by js/destinations.js: loadHomeCategories() -->
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED -->
+  <section class="section-pad bg-white/60">
+    <div class="mx-auto max-w-7xl">
+      <div class="flex items-end justify-between">
+        <h2 class="font-display text-3xl font-semibold text-tide">Featured Destinations</h2>
+        <a href="destinations.html" class="hidden text-sm font-medium text-coral hover:underline sm:block">View all →</a>
+      </div>
+      <div id="featured-grid" class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <!-- injected by js/destinations.js: loadFeaturedDestinations() -->
+      </div>
+    </div>
+  </section>
+
+  <!-- POPULAR -->
+  <section class="section-pad">
+    <div class="mx-auto max-w-7xl">
+      <h2 class="font-display text-3xl font-semibold text-tide">Popular Right Now</h2>
+      <div id="popular-grid" class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <!-- injected by js/destinations.js: loadPopularDestinations() -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-pad">
+    <div class="mx-auto max-w-5xl rounded-[2rem] bg-tide px-8 py-16 text-center sm:px-16">
+      <h2 class="font-display text-3xl font-semibold text-white sm:text-4xl">Ready to plan your next trip?</h2>
+      <p class="mx-auto mt-4 max-w-xl text-sand/80">
+        Create a free account to save favorites, leave reviews, and get destinations picked just for you.
+      </p>
+      <a href="register.html" class="btn-primary mt-8 inline-flex bg-coral">Get Started — It's Free</a>
+    </div>
+  </section>
+
+  <div id="footer-root"></div>
+
+  <script src="js/supabase.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/destinations.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.getElementById("hero-search-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const q = document.getElementById("hero-search").value.trim();
+      window.location.href = "destinations.html" + (q ? `?q=${encodeURIComponent(q)}` : "");
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadHomeCategories();
+      loadFeaturedDestinations();
+      loadPopularDestinations();
+    });
+  </script>
+</body>
+</html>

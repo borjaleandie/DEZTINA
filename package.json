@@ -1,0 +1,13 @@
+{
+  "name": "destina",
+  "version": "1.0.0",
+  "description": "DESTINA — Tourist Destination Guide and Recommendation System",
+  "private": true,
+  "scripts": {
+    "dev": "tailwindcss -i ./css/input.css -o ./css/style.css --watch",
+    "build": "tailwindcss -i ./css/input.css -o ./css/style.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.10"
+  }
+}
