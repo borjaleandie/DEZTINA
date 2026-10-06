@@ -17,8 +17,8 @@
  */
 
 // TODO: replace with your project's values (Supabase Dashboard > Project Settings > API)
-const SUPABASE_URL = window.__ENV__?.SUPABASE_URL || "https://mnsxsekvyqunuagzdcqp.supabase.co";
-const SUPABASE_ANON_KEY = window.__ENV__?.SUPABASE_ANON_KEY || "sb_publishable_cOgketh-zGr7fd1eoUKMAQ__H-adUDV";
+const SUPABASE_URL = window.__ENV__?.SUPABASE_URL || "https://cjbrshcezbqjdyywhybq.supabase.co";
+const SUPABASE_ANON_KEY = window.__ENV__?.SUPABASE_ANON_KEY || "sb_publishable_b5aUEqnB9WLACXd4GK1otw_SxZD0oOQ";
 
 // `supabase` global comes from the CDN script tag included on every page:
 // <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
